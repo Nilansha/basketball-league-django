@@ -1,1 +1,1 @@
-# basketball-league-django
+# Basketball League API using Django REST framework
