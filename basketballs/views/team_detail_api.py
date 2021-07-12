@@ -72,7 +72,7 @@ def get_player_avg_score(player, participation):
 
 '''
 Get players who have average score more than 90 with their ranks
-Access : Coach
+Access :  Coach
 api : /api/get_top_players_with_ranks
 '''
 @csrf_exempt
