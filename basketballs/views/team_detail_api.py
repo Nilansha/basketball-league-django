@@ -18,7 +18,7 @@ def get_all_team_players(request):
         players = models.player.Player.objects.filter().values()
     else:
         team = models.team.Team.objects.filter(coach_id=request.user.id)
-        #TODO: if coach has no team
+        # TODO: if coach has no team
         players = models.player.Player.objects.filter(team_id=team[0].id).values()
     player_list = []
     for ply in players:
@@ -74,8 +74,9 @@ def get_top_players_with_ranks(request):
         avg_score = get_player_avg_score(player, participation)
         rec = {'id': player.id, 'name': player.user_id.first_name + ' ' + player.user_id.last_name,
                'avg_score': avg_score}
-        # if avg_score > 90:
-        player_list.append(rec)
+        # if avg_score is grater than 90
+        if avg_score > 90:
+            player_list.append(rec)
 
     sorted_players = sorted(player_list, key=lambda x: (int(player_list[0]['avg_score'])))
     count = 1
