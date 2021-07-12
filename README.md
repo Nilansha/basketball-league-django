@@ -25,23 +25,7 @@ There are three types of users.
   2. Coach
   3. Player
 
-Use following URLs to access APIs
-#### GET
-```
-http://localhost:8000/api/match_details
-http://localhost:8000/api/team_players
-http://localhost:8000/api/player/1
-http://localhost:8000/api/top_players
-```
-#### POST
-```
-http://localhost:8000/api/login
-http://localhost:8000/api/logout
-```
-
-Results may change according to the user's access level.
-
-## Access Levels 
+### Access Levels 
 
 Function\Levels | Admin | Coach | Player 
 --- | --- | --- | --- 
@@ -58,4 +42,59 @@ View the players whose average score is above 90 with ranks | :heavy_check_mark:
 View all the players in side the league | :heavy_check_mark: | :x: | :x: 
 --- | --- | --- | --- 
 View all the details of the players in side the league | :heavy_check_mark: | :x: | :x:
+
+## APIs
+
+Use the following URLs to access the APIs
+## GET
+NOTE: Pass the logged user's token inside the header under "Authorization" key. As shown in the blow images.
+
+(format: Token 9666677f6421bf89feb1b7121fd9ea8096fbee66)
+##### View the scoreboard
+```
+http://localhost:8000/api/match_details
+```
+![image](https://user-images.githubusercontent.com/20280857/125286580-9822f180-e339-11eb-86c6-e1e214e5f374.png)
+
+
+##### View the team players
+```
+http://localhost:8000/api/team_players
+```
+![image](https://user-images.githubusercontent.com/20280857/125286677-b8eb4700-e339-11eb-9f48-8cf4bd373f0a.png)
+
+
+##### View player details
+```
+http://localhost:8000/api/player/1
+```
+![image](https://user-images.githubusercontent.com/20280857/125286789-d3252500-e339-11eb-8c59-afbc0b9af762.png)
+
+
+#### View top players with ranks
+```
+http://localhost:8000/api/top_players
+```
+![image](https://user-images.githubusercontent.com/20280857/125286910-efc15d00-e339-11eb-8720-bdaa1f26a1d4.png)
+
+
+
+## POST
+
+##### Login
+```
+http://localhost:8000/api/login
+```
+![image](https://user-images.githubusercontent.com/20280857/125284961-b556c080-e337-11eb-8440-0f5409b127b4.png)
+
+##### Logout
+```
+http://localhost:8000/api/logout
+```
+![image](https://user-images.githubusercontent.com/20280857/125285125-f18a2100-e337-11eb-9a49-601004023060.png)
+
+
+Results may change according to the user's access level.
+
+
   
