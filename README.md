@@ -1,4 +1,4 @@
-# Basketball League API using Django REST framework :basketball: :basketball_man: 
+# Basketball League API using Django REST framework :basketball: :basketball_man: :basketball_woman: 
 ## Introduction
 This is an API regarding basketball league to develop a management system to monitor games statistics and rankings.
 
