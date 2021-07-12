@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'basketballs',
     'rest_framework',
     'rest_framework.authtoken',
+    'django_seed',
 ]
 
 MIDDLEWARE = [
