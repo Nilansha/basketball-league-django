@@ -9,28 +9,39 @@ from rest_framework.response import Response
 from basketballs import models
 from django.shortcuts import get_object_or_404
 
-
+'''
+Get all team players / if coach: only coach's team
+Access : Admin, Coach
+api : /api/get_all_team_players
+'''
 @csrf_exempt
 @api_view(["GET"])
 @permission_classes((IsCoach,))
 def get_all_team_players(request):
+    # if admin show all the players in the league
     if request.user.groups.filter(name='Admin') or request.user.is_superuser:
         players = models.player.Player.objects.filter().values()
     else:
+        # get players under logged coach
         team = models.team.Team.objects.filter(coach_id=request.user.id)
-        # TODO: if coach has no team
         players = models.player.Player.objects.filter(team_id=team[0].id).values()
     player_list = []
     for ply in players:
         player = get_object_or_404(models.player.Player, pk=ply['id'])
         participation = get_player_match_count(player)
         avg_score = get_player_avg_score(player, participation)
-        rec = {'id': player.id, 'name': player.user_id.first_name+' ' + player.user_id.last_name,'team':player.team_id.name,
-               'height': player.height, 'participation': participation, 'avg_score': avg_score}
+        rec = {'id': player.id, 'name': player.user_id.first_name+' ' + player.user_id.last_name,
+               'team': player.team_id.name, 'height': player.height, 'participation': participation,
+               'avg_score': avg_score}
         player_list.append(rec)
     return Response(player_list, status=HTTP_200_OK)
 
 
+'''
+Get player details
+Access : Admin, Coach
+api : /api/get_player/{player_id}
+'''
 @csrf_exempt
 @api_view(["GET"])
 @permission_classes((IsCoach,))
@@ -59,30 +70,38 @@ def get_player_avg_score(player, participation):
         avg = score/participation
     return avg
 
-
+'''
+Get players who have average score more than 90 with their ranks
+Access : Coach
+api : /api/get_top_players_with_ranks
+'''
 @csrf_exempt
 @api_view(["GET"])
 @permission_classes((IsCoach,))
 def get_top_players_with_ranks(request):
-    team_coach = models.team.Team.objects.filter(coach_id=request.user.id)
-    players = models.player.Player.objects.filter(team_id=team_coach[0].id).values()
-    player_list = []
+    # if admin show all the players in the league
+    if request.user.groups.filter(name='Admin') or request.user.is_superuser:
+        return Response({'error': "This feature can access only for coaches"}, status=HTTP_200_OK)
+    else:
+        team_coach = models.team.Team.objects.filter(coach_id=request.user.id)
+        players = models.player.Player.objects.filter(team_id=team_coach[0].id).values()
+        player_list = []
 
-    for ply in players:
-        player = get_object_or_404(models.player.Player, pk=ply['id'])
-        participation = get_player_match_count(player)
-        avg_score = get_player_avg_score(player, participation)
-        rec = {'id': player.id, 'name': player.user_id.first_name + ' ' + player.user_id.last_name,
-               'avg_score': avg_score}
-        # if avg_score is grater than 90
-        if avg_score > 90:
-            player_list.append(rec)
+        for ply in players:
+            player = get_object_or_404(models.player.Player, pk=ply['id'])
+            participation = get_player_match_count(player)
+            avg_score = get_player_avg_score(player, participation)
+            rec = {'id': player.id, 'name': player.user_id.first_name + ' ' + player.user_id.last_name,
+                   'avg_score': avg_score}
+            # if avg_score is grater than 90
+            if avg_score > 90:
+                player_list.append(rec)
+        # sort the list by the value of average score
+        sorted_players = sorted(player_list, key=lambda x: (int(player_list[0]['avg_score'])))
+        count = 1
+        for player in sorted_players:
+            player.update({'rank': count})
+            count += 1
 
-    sorted_players = sorted(player_list, key=lambda x: (int(player_list[0]['avg_score'])))
-    count = 1
-    for player in sorted_players:
-        player.update({'rank': count})
-        count += 1
-
-    return Response(player_list, status=HTTP_200_OK)
+        return Response(player_list, status=HTTP_200_OK)
 
