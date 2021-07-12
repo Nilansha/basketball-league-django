@@ -16,9 +16,18 @@ python manage.py makemigrations
 python manage.py migrate
 python manage.py runserver
 ``` 
-
 4. And navigate to http://127.0.0.1:8000/admin/ check your project.
 5. Use postman to access APIs.
+
+#### Seed data to the database
+With django-seed, you can seed your database with test data from the command line using the manage.py seed command.
+
+Ex: Seed 10 of each model for the app api:
+
+```
+$ python manage.py seed api --number=10
+```
+
 
 ## Features
 There are three types of users.
