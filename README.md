@@ -2,7 +2,7 @@
 ## Introduction
 This is an API regarding basketball league to develop a management system to monitor games statistics and rankings.
 
-## Installation
+## Setup
 1. The first thing to do is to clone the repository
 ```
 $ git clone https://github.com/Nilansha/basketball-league-django-rest-api.git
